@@ -55,7 +55,7 @@ int main(void)
     printf("Sooooo what would you rate it?:");
     if (scanf("%d", &CurrentMood) != 1)
     {
-        printf("Cant get input, weird...\n");
+        printf("Can't get input, weird...\n");
 	return 1;
     }
     switch (CurrentMood)
@@ -75,10 +75,33 @@ int main(void)
 	case 5:
 	    printf("Set mood: Very sad\nWriting to file...\n");
 	    break;
+	default:
+	    printf("Huh what...\n");
+	    return EXIT_FAILURE;
     }
-    if (fprintf(fp, "%ld %d\n", now, CurrentMood) < 0)
+    int NoteChoice;
+    printf("Wanna add a note?(1. yes, 2. no):");
+    if (scanf("%d", &NoteChoice) != 1)
     {
-        perror("Cant write to file, weird...\nThis mood wasnt saved TwT\n");
+        printf("Can't get input, weird...\n");
+	return EXIT_FAILURE;
+    }
+    char Note[512];
+    switch (NoteChoice)
+    {
+        case 1:
+            printf("Heck yeah! Enter your note here:");
+	    if (scanf(" %[^\n]", Note) != 1)
+	    {
+                perror("Can't get input, weird...\n");
+	    }
+	    break;
+	case 2:
+	    break;
+    }
+    if (fprintf(fp, "%ld %d %s\n", now, CurrentMood, Note) < 0)
+    {
+        perror("Can't write to file, weird...\nThis mood wasnt saved TwT\n");
 	fclose(fp);
 	return EXIT_FAILURE;
     }
